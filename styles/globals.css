@@ -2,19 +2,10 @@ html,
 body {
 	margin: 0;
 	padding: 0;
+	color: var(--black);
+	background: #F5F6F8;
 
-	font-family:
-		-apple-system,
-		BlinkMacSystemFont,
-		"Segoe UI",
-		Roboto,
-		Oxygen,
-		Ubuntu,
-		Cantarell,
-		"Fira Sans",
-		"Droid Sans",
-		"Helvetica Neue",
-		sans-serif;
+	font-family: "Noto Sans KR", sans-serif;
 }
 
 a {
@@ -25,4 +16,19 @@ a {
 
 * {
 	box-sizing: border-box;
+}
+
+:root {
+	--black: #3B434E;
+	--gray-light: #EBEBEB;
+	--gray: #A4A4A4;
+	--gray-dark: #6C7077;
+	--white: white;
+	--primary: #7351F5;
+	--primary-hover: #6344DF;
+	--red-light: #FEA291;
+	--red: #FC836D;
+	--green: #007B48;
+	--green-light: #C8F8E4;
+	--font-family: "Noto Sans KR", sans-serif;
 }
