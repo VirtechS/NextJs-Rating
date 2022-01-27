@@ -12,7 +12,6 @@ export const Header = ({ className, ...props }: HeaderProps): JSX.Element => {
 	const [isOpened, setIsOpened] = useState<boolean>(false);
 	const router = useRouter();
 	const shouldReduceMotion = useReducedMotion();
-
 	useEffect(() => {
 		setIsOpened(false);
 	}, [router]);
