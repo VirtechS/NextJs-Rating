@@ -2,23 +2,22 @@ import { SearchProps } from "./Search.props";
 import styles from "./Search.module.css";
 import cn from "classnames";
 import { Button, Input } from "..";
-import { useState } from "react";
+import { useState, KeyboardEvent } from "react";
 import GlasshIcon from "./glass.svg";
 import { useRouter } from "next/router";
 
 export const Search = ({ className, ...props }: SearchProps): JSX.Element => {
-  const [search, setSearch] = useState<string>("");
-
-  const router = useRouter();
+  const [search, setSearch] = useState<string>('');
+	const router = useRouter();
 
   const goToSearch = () => {
-    router.push({
-      pathname: "/search",
-      query: {
-        q: search,
-      },
-    });
-  };
+		router.push({
+			pathname: '/search',
+			query: {
+				q: search
+			}
+		});
+	};
 
   const handleKeyDown = (e: KeyboardEvent) => {
 		if (e.key == 'Enter') {
@@ -26,7 +25,7 @@ export const Search = ({ className, ...props }: SearchProps): JSX.Element => {
 		}
 	};
   return (
-    <div className={cn(className, styles.search)} {...props}>
+    <form className={cn(className, styles.search)} {...props} role="search">
       <Input
         placeholder="Поиск..."
         value={search}
@@ -37,9 +36,10 @@ export const Search = ({ className, ...props }: SearchProps): JSX.Element => {
         appearance="primary"
         className={styles.button}
         onClick={goToSearch}
+        aria-label="Искать по сайту"
       >
         <GlasshIcon />
       </Button>
-    </div>
+    </form>
   );
 };

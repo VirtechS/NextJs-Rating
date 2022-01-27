@@ -14,6 +14,7 @@ import { useState } from "react";
 
 export const ReviewForm = ({
   productId,
+  isOpened,
   className,
   ...props
 }: ReviewFormProps): JSX.Element => {
@@ -21,7 +22,9 @@ export const ReviewForm = ({
     register,
     control,
     handleSubmit,
-    formState: { errors }, reset
+    formState: { errors },
+    reset,
+    clearErrors,
   } = useForm<IReviewForm>();
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<string>();
@@ -46,19 +49,23 @@ export const ReviewForm = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={cn(styles.reviewForm, className)} {...props}>
         <Input
+          tabIndex={isOpened ? 0 : -1}
           {...register("name", {
             required: { value: true, message: "Заполните имя" },
           })}
           placeholder="Имя"
           error={errors.name}
+          aria-invalid={errors.name ? true : false}
         />
         <Input
+          tabIndex={isOpened ? 0 : -1}
           className={styles.title}
           {...register("title", {
             required: { value: true, message: "Заполните заголовок" },
           })}
           placeholder="Заголовок отзыва"
           error={errors.title}
+          aria-invalid={errors.title ? true : false}
         />
         <div className={styles.rating}>
           <span>Оценка:</span>
@@ -70,6 +77,7 @@ export const ReviewForm = ({
             }}
             render={({ field }) => (
               <Rating
+                tabIndex={isOpened ? 0 : -1}
                 isEditable
                 rating={field.value}
                 ref={field.ref}
@@ -80,36 +88,54 @@ export const ReviewForm = ({
           ></Controller>
         </div>
         <Textarea
+          tabIndex={isOpened ? 0 : -1}
           {...register("description", {
             required: { value: true, message: "Заполните текст отзыва" },
           })}
           placeholder="Текст отзыва"
           className={styles.description}
           error={errors.description}
+          aria-label="Текст отзыва"
+          aria-invalid={errors.description ? true : false}
         />
         <div className={styles.submit}>
-          <Button appearance="primary">Отправить</Button>
+          <Button
+            tabIndex={isOpened ? 0 : -1}
+            appearance="primary"
+            onClick={() => clearErrors()}
+          >
+            Отправить
+          </Button>
           <span className={styles.info}>
             * Перед публикацией отзыв пройдет предварительную модерацию и
             проверку
           </span>
         </div>
       </div>
-      {isSuccess && <div className={styles.success}>
-        <div className={styles.successTitle}>Ваш отзыв отправлен</div>
-        <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
-        <CloseIcon className={styles.close} onClick={() => setIsSuccess(false)}/>
-      </div>}
-      {isError && <div className={cn(styles.error, styles.panel)} role="alert">
-				Что-то пошло не так, попробуйте обновить страницу
-				<button
-					onClick={() => setIsError(undefined)}
-					className={styles.close}
-					aria-label="Закрыть оповещение"
-				>
-					<CloseIcon className={styles.close} onClick={() => setIsError(undefined)}/>
-				</button>
-			</div>}
+      {isSuccess && (
+        <div className={styles.success} role="alert">
+          <div className={styles.successTitle}>Ваш отзыв отправлен</div>
+          <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
+          <button aria-label="Закрыть оповещение" className={styles.close} onClick={() => setIsSuccess(false)}>
+            <CloseIcon/>
+          </button>
+        </div>
+      )}
+      {isError && (
+        <div className={cn(styles.error, styles.panel)} role="alert">
+          Что-то пошло не так, попробуйте обновить страницу
+          <button
+            onClick={() => setIsError(undefined)}
+            className={styles.close}
+            aria-label="Закрыть оповещение"
+          >
+            <CloseIcon
+              className={styles.close}
+              onClick={() => setIsError(undefined)}
+            />
+          </button>
+        </div>
+      )}
     </form>
   );
 };
