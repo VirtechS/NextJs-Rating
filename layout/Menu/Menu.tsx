@@ -10,26 +10,31 @@ import { motion, useReducedMotion } from "framer-motion";
 
 export const Menu = (): JSX.Element => {
   const { menu, setMenu, firstCategory } = useContext(AppContext);
-  const [announce, setAnnounce] = useState<"closed" | "opened" | "undefined">();
-  const router = useRouter();
+  const [announce, setAnnounce] = useState<"closed" | "opened" | undefined>();
   const shouldReduceMotion = useReducedMotion();
+  const router = useRouter();
+
   const variants = {
     visible: {
       marginBottom: 20,
-      transition: shouldReduceMotion ? {} : {
-        when: "beforeChildren",
-        staggerChildren: 0.1,
-      },
+      transition: shouldReduceMotion
+        ? {}
+        : {
+            when: "beforeChildren",
+            staggerChildren: 0.1,
+          },
     },
     hidden: { marginBottom: 0 },
   };
+
   const variantsChildren = {
     visible: {
-      opacity: shouldReduceMotion ? 1 : 0,
+      opacity: 1,
       height: 29,
     },
-    hidden: { opacity: 0, height: 0 },
+    hidden: { opacity: shouldReduceMotion ? 1 : 0, height: 0 },
   };
+
   const openSecondLevel = (secondCategory: string) => {
     setMenu &&
       setMenu(
@@ -117,7 +122,7 @@ export const Menu = (): JSX.Element => {
     isOpened: boolean
   ) => {
     return pages.map((p) => (
-      <motion.li variants={variantsChildren} key={p._id}>
+      <motion.li key={p._id} variants={variantsChildren}>
         <Link href={`/${route}/${p.alias}`}>
           <a
             tabIndex={isOpened ? 0 : -1}
@@ -137,7 +142,7 @@ export const Menu = (): JSX.Element => {
   };
 
   return (
-    <nav role="navigation" className={styles.menu}>
+    <nav className={styles.menu} role="navigation">
       {announce && (
         <span role="log" className="visualyHidden">
           {announce == "opened" ? "развернуто" : "свернуто"}
